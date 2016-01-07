@@ -10,7 +10,7 @@ It is important to understand the differences between javascript's coroutine and
 Three cases are investigated.
 - [Case I: Heavy calculation processes without IO blocking] 
 - [Case II: Heavy calculation processes with IO blocking] 
-- [Case III: Light calculation processes with IO blocking ] 
+- [Case III: Light calculation processes with IO blocking] 
 
    [Case I: Heavy calculation processes without IO blocking]: <https://github.com/IcarusSo/>
    [Case II: Heavy calculation processes with IO blocking]: <https://github.com/IcarusSo/>
