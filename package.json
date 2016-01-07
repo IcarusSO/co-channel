@@ -1,6 +1,6 @@
 {
   "name": "co-channel",
-  "version": "0.0.1",
+  "version": "0.5.2",
   "description": "Channels for javascript concurrency pattern",
   "main": "./src/coChannel.js",
   "directories": {
@@ -19,8 +19,11 @@
     "es6",
     "concurrency",
     "go",
+    "goroutine",
     "coroutine",
-    "multi-core",
+    "channel",
+    "multi",
+    "core",
     "co",
     "machine",
     "learning"
