@@ -1,0 +1,34 @@
+{
+  "name": "co-channel",
+  "version": "0.0.1",
+  "description": "Channels for javascript concurrency pattern",
+  "main": "./src/coChannel.js",
+  "directories": {
+    "doc": "doc",
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IcarusSO/co-channel.git"
+  },
+  "keywords": [
+    "co-channel",
+    "es6",
+    "concurrency",
+    "go",
+    "coroutine",
+    "multi-core",
+    "co",
+    "machine",
+    "learning"
+  ],
+  "author": "Icarus",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/IcarusSO/co-channel/issues"
+  },
+  "homepage": "https://github.com/IcarusSO/co-channel#readme"
+}
