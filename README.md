@@ -12,9 +12,9 @@ Three cases are investigated.
 - [Case II: Heavy calculation processes with IO blocking] 
 - [Case III: Light calculation processes with IO blocking] 
 
-   [Case I: Heavy calculation processes without IO blocking]: <https://github.com/IcarusSo/>
-   [Case II: Heavy calculation processes with IO blocking]: <https://github.com/IcarusSo/>
-   [Case III: Light calculation processes with IO blocking]: <https://github.com/IcarusSo/>
+   [Case I: Heavy calculation processes without IO blocking]: <https://raw.githubusercontent.com/IcarusSO/co-channel/master/doc/Case%20I-%20Heavy%20calculation%20processes%20without%20IO%20blocking%20.png>
+   [Case II: Heavy calculation processes with IO blocking]: <https://raw.githubusercontent.com/IcarusSO/co-channel/master/doc/Case%20II-%20Heavy%20calculation%20processes%20with%20IO%20blocking%20.png>
+   [Case III: Light calculation processes with IO blocking]: <https://raw.githubusercontent.com/IcarusSO/co-channel/master/doc/Case%20III-%20Light%20calculation%20processes%20with%20IO%20blocking%20.png>
 
 To-conclude: Coroutine has compatible performance with goroutine when the routines are lightweight computation with heavy IO blocking where is most the cases in real life.
 
