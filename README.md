@@ -97,15 +97,15 @@ ch1.put(1).then( _=> sequence += 1);
 * [channel.take.selected()] - used in channel.select, take action if it is the selected channel
 * [channel.put.selected()] - used in channel.select, put action if it is the selected channel
 
-   [new channel(buffer_no)]: <>
-   [channel.put(brick)]: <>
-   [channel.take()]: <>
-   [channel.close()]: <>
-   [channel.stake()]: <>
-   [channel.sput(brick)]: <>
-   [channel.select(selectedArr)]: <>
-   [channel.take.selected()]: <>
-   [channel.put.selected()]: <>
+   [new channel(buffer_no)]: <https://github.com/IcarusSO/co-channel>
+   [channel.put(brick)]: <https://github.com/IcarusSO/co-channel>
+   [channel.take()]: <https://github.com/IcarusSO/co-channel>
+   [channel.close()]: <https://github.com/IcarusSO/co-channel>
+   [channel.stake()]: <https://github.com/IcarusSO/co-channel>
+   [channel.sput(brick)]: <https://github.com/IcarusSO/co-channel>
+   [channel.select(selectedArr)]: <https://github.com/IcarusSO/co-channel>
+   [channel.take.selected()]: <https://github.com/IcarusSO/co-channel>
+   [channel.put.selected()]: <https://github.com/IcarusSO/co-channel>
    
 
 
