@@ -67,14 +67,46 @@ co.wrap(scripter2Co)(ch).catch(err => console.log('scripter2Go', err));
 ```
 
 
+```javascript
+// selecting the channel which is valid first 
+var sequence = '';
+var ch1 = new channel();
+var ch2 = new channel();
+
+co(function*(){
+	var brick = yield channel.select([
+		ch1.take.selected(),
+		ch2.take.selected()
+	]);
+	console.log('brick from channel 2 is token', brick);
+})
+
+ch2.put(2).then(_ => sequence += 2);
+ch1.put(1).then( _=> sequence += 1);
+```
+
 
 ### Api
-* new channel(buffer_no) - create a new co-channel with number of buffers, default is one
-* channel.put(brick) - return a Promise which will be resolved when the channel has vacancy and the brick is put to the channel.
-* channel.take() - return a Promise which will be resolved with a brick in the channel
-* channel.close() - add a channel.CLOSED brick to the channel and return a promise when the all the bricks 
-* channel.stake() - attempt to take a brick immediately. return [brick] if there is a brick in the channel, return false if there is no bricks
-* channel.sput(brick) - attemp to put a brick immediately. return true if there the brick successfully and return false if can't
+* [new channel(buffer_no)] - create a new co-channel with number of buffers, default is one
+* [channel.put(brick)] - return a Promise which will be resolved when the channel has vacancy and the brick is put to the channel.
+* [channel.take()] - return a Promise which will be resolved with a brick in the channel
+* [channel.close()] - add a channel.CLOSED brick to the channel and return a promise when the all the bricks 
+* [channel.stake()] - attempt to take a brick immediately. return [brick] if there is a brick in the channel, return false if there is no bricks
+* [channel.sput(brick)] - attemp to put a brick immediately. return true if there the brick successfully and return false if can't
+* [channel.select(selectedArr)] - selecting the first channel which is valid, return a Prmise
+* [channel.take.selected()] - used in channel.select, take action if it is the selected channel
+* [channel.put.selected()] - used in channel.select, put action if it is the selected channel
+
+   [new channel(buffer_no)]: <>
+   [channel.put(brick)]: <>
+   [channel.take()]: <>
+   [channel.close()]: <>
+   [channel.stake()]: <>
+   [channel.sput(brick)]: <>
+   [channel.select(selectedArr)]: <>
+   [channel.take.selected()]: <>
+   [channel.put.selected()]: <>
+   
 
 
 ### Future development

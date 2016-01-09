@@ -32,5 +32,8 @@
   "bugs": {
     "url": "https://github.com/IcarusSO/co-channel/issues"
   },
-  "homepage": "https://github.com/IcarusSO/co-channel#readme"
+  "homepage": "https://github.com/IcarusSO/co-channel#readme",
+  "dependencies": {
+    "co": "^4.6.0"
+  }
 }
