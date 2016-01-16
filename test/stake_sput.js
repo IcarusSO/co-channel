@@ -1,4 +1,5 @@
 var co = require('co');
+var assert = require('assert');
 var channel = require('../src/coChannel');
 
 var sleep = function(millSec){
@@ -7,36 +8,30 @@ var sleep = function(millSec){
   })
 }
 
-function test1(){
-	var ch = new channel();
-	ch.put(1);
-	var result = ch.stake();
-	console.log('test1', result && result[0] == 1, result);
-}
-
-function test2(){
-	var ch = new channel();
-	//ch.put(1);
-	var result = ch.stake();
-	console.log('test2', result == false, result);
-}
-
-function test3(){
-	var ch = new channel();
-	ch.take();
-	var result = ch.sput(1);
-	console.log('test3', result == true, result);
-}
-
-function test4(){
-	var ch = new channel();
-	//ch.take();
-	var result = ch.sput(1);
-	console.log('test4', result == false, result);
-}
+describe('Check a action immediately with stake & sput', _ => {
+	it('should stake with true', () => {
+		var ch = new channel();
+		ch.put(1);
+		var result = ch.stake();
+		assert.equal(result && result[0] == 1, true);
+	})
+	it('should stake with false', () => {
+		var ch = new channel();
+		var result = ch.stake();
+		assert.equal(result, false);
+	})
+	it('should sput with true', () => {
+		var ch = new channel();
+		ch.take();
+		var result = ch.sput(1);
+		assert.equal(result, true);
+	})
+	it('should stake with false', () => {
+		var ch = new channel();
+		var result = ch.sput(1);
+		assert.equal(result, false);
+	})
+})
 
 
-test1();
-test2();
-test3();
-test3();
+

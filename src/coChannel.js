@@ -1,5 +1,6 @@
-var coChannel = function(no_buffer){
+var coChannel = function(no_buffer, type){
   this._no_buffer = no_buffer == undefined ? 0: no_buffer;
+  this._type = type == undefined? coChannel.DEFAULT: type;
   this._getRequest = [];
   this._putRequest = [];
   this._bricks = [];
@@ -117,7 +118,13 @@ coChannel.prototype.close = function(){
 }
 
 coChannel.prototype._canPut = function(){
- return (this._getRequest.length > 0 || this._bricks.length < this._no_buffer);
+  if(this._getRequest.length > 0) return true;
+  if(this._type == coChannel.DISCARD){
+    if(this._bricks.length == this._no_buffer){
+      this._bricks.pop();
+    }
+  }
+ return (this._bricks.length < this._no_buffer);
 }
 
 coChannel.prototype._canTake = function(){
@@ -166,5 +173,7 @@ coChannel.prototype._alertNewVacancy = function(){
 }
 
 coChannel.CLOSED = {};
+coChannel.DISCARD = 'discard';
+coChannel.DEFAULT = 'default';
 
 module.exports = coChannel;
