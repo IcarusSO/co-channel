@@ -75,6 +75,17 @@ coChannel.select = function(selectedArr){
     })
 }
 
+coChannel.wrap = function(f){
+  return function(){
+    var ch = arguments[arguments.length - 1]
+    var _arg = Array.prototype.slice.call(arguments, 0, arguments.length - 1)
+
+    return ch.put()
+      .then(() => f.apply(null, _arg))
+      .then(result => ch.take().then(() => result))
+      .catch(err => ch.take().then(_ => Promise.reject(err)))
+  }
+}
 
 coChannel.prototype.put = function(brick){
   var _this = this;
@@ -119,9 +130,9 @@ coChannel.prototype.close = function(){
 
 coChannel.prototype._canPut = function(){
   if(this._getRequest.length > 0) return true;
-  if(this._type == coChannel.DISCARD){
+  if(this._type == coChannel.SLIDING){
     if(this._bricks.length == this._no_buffer){
-      this._bricks.pop();
+      this._bricks.shift();
     }
   }
  return (this._bricks.length < this._no_buffer);
@@ -173,7 +184,8 @@ coChannel.prototype._alertNewVacancy = function(){
 }
 
 coChannel.CLOSED = {};
-coChannel.DISCARD = 'discard';
+coChannel.SLIDING = 'sliding';
+coChannel.DROPING = 'droping';
 coChannel.DEFAULT = 'default';
 
 module.exports = coChannel;
