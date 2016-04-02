@@ -38,7 +38,7 @@ var ch3 = new channel();
 co(function*(){
     var data = '0';
     yield ch1.put(data);
-    data = yeild ch3.take();
+    data = yield ch3.take();
     console.log(data);
 })
 // Process 2

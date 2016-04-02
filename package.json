@@ -1,6 +1,6 @@
 {
   "name": "co-channel",
-  "version": "0.6.0",
+  "version": "0.6.2",
   "description": "Channels for javascript concurrency pattern",
   "main": "./src/coChannel.js",
   "directories": {
