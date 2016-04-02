@@ -25,50 +25,37 @@ var co = require('co');
 var channel = require('co-channel');
 ```
 ```javascript
-var sleep = function(millSec){
-	return new Promise((resolve, reject) => {
-		setTimeout(resolve, millSec);
-	})
-}
+// Communicating sequential processes
+// Each process is considered as executing independently and communicated via co-channel
+// Process 1 initilize a data brick, pass to process 2 via channel-1
+// Process 2 reveive data via channel-1, and pass to process 3 via channel-2
+// Process 3 receive data via channel-2, and pass back to process 1 via channel-1
+// Process 1 wait until data received from process 3 and print the data out
+var ch1 = new channel();
+var ch2 = new channel();
+var ch3 = new channel();
+// Process 1
+co(function*(){
+    var data = '0';
+    yield ch1.put(data);
+    data = yeild ch3.take();
+    console.log(data);
+})
+// Process 2
+co(function*(){
+    var data = ch1.take();
+    data += '-1';
+    ch2.put(data);
+})
+// Process 3
+co(function*(){
+    var data = ch2.take();
+    data += '-2';
+    ch3.put(data)
+})
 ```
 ```javascript
-// scripting pages
-var scripter1Co = function* (outCh){
-	for(let page = 0; page < 5; page++){
-		yield sleep(500).then(_ => console.log('page', page, 'catched'));
-		var rows = [];
-		for(let row = 0; row < 7; row++){
-			rows.push(row);
-		}
-		var brick = {page: page, rows: rows};
-		yield outCh.put(brick);
-	}
-	outCh.close();
-}
-
-// scripting coordinate of each row
-var scripter2Co = function* (inCh){
-	while(true){
-		var brick = yield inCh.take();
-		if(brick == channel.CLOSED) return;
-		var page = brick.page;
-		var rows = brick.rows;
-		for(var i = 0; i < rows.length; i++){
-			var coord = yield sleep(100).then(_ => ""+Math.random());
-			console.log('page', page, 'row', i, 'coord', coord);
-		}
-	}
-}
-
-
-var ch = new channel(1000);
-co.wrap(scripter1Co)(ch).catch(err => console.log('scripter1Go', err));
-co.wrap(scripter2Co)(ch).catch(err => console.log('scripter2Go', err));
-```
-
-
-```javascript
-// selecting the channel which is valid first 
+// selecting the channel which is available first 
 var sequence = '';
 var ch1 = new channel();
 var ch2 = new channel();
@@ -84,10 +71,51 @@ co(function*(){
 ch2.put(2).then(_ => sequence += 2);
 ch1.put(1).then( _=> sequence += 1);
 ```
+```javascript
+// Scrapper
+// Another milestone of co-channel is to allow co-routine scrapping
+// co-channel allow wrapping a promise to limit the number of co-occurrence
+var download = function(url){
+	return new Promise((resolve, reject) => {
+		http.get(url, function(response){
+			response.setEncoding('utf8');
+			var data = '';
+			response.on('data', function(chunk){
+				data += chunk;
+			})
+			response.on('end', function(){
+				resolve(data);
+			})
+		})
+		.on('error', function(err){
+			reject(err);
+		})
+	})
+}
+var downloadCo = channel.wrap(download); // wrapping a http-download promise
+var ch = new channel(2); // limiting the co-occurrence be 2
+
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err => console.log(err))
+
+// Those http requests are queued and doing max 2 http request in the same time
+```
 
 
 ### Api
-* [new channel(buffer_no)] - create a new co-channel with number of buffers, default is one
+* [new channel(buffer_no[, type])] - create a new co-channel with number of buffers, default is zero. Types of channel can be 'default', 'sliding' or 'droping'
 * [channel.put(brick)] - return a Promise which will be resolved when the channel has vacancy and the brick is put to the channel.
 * [channel.take()] - return a Promise which will be resolved with a brick in the channel
 * [channel.close()] - add a channel.CLOSED brick to the channel and return a promise when the all the bricks 
@@ -96,6 +124,10 @@ ch1.put(1).then( _=> sequence += 1);
 * [channel.select(selectedArr)] - selecting the first channel which is valid, return a Prmise
 * [channel.take.selected()] - used in channel.select, take action if it is the selected channel
 * [channel.put.selected()] - used in channel.select, put action if it is the selected channel
+* [channel.wrap(promise)] - wrapping a promise to make it accepting channel as the last argument which be used to control to co-occurrence
+* [channel.DEFAULT] - type of a channel, extra buffers are queued
+* [channel.DROPPING] - type of a channel, extra buffers are dropped
+* [channel.SLIDING] - type of a channel, extra buffers replace the eraliest buffers
 
    [new channel(buffer_no)]: <https://github.com/IcarusSO/co-channel>
    [channel.put(brick)]: <https://github.com/IcarusSO/co-channel>
@@ -106,6 +138,10 @@ ch1.put(1).then( _=> sequence += 1);
    [channel.select(selectedArr)]: <https://github.com/IcarusSO/co-channel>
    [channel.take.selected()]: <https://github.com/IcarusSO/co-channel>
    [channel.put.selected()]: <https://github.com/IcarusSO/co-channel>
+   [channel.wrap()]: <https://github.com/IcarusSO/co-channel>
+   [channel.DEFAULT]: <https://github.com/IcarusSO/co-channel>
+   [channel.SLIDING]: <https://github.com/IcarusSO/co-channel>
+   [channel.DROPING]: <https://github.com/IcarusSO/co-channel>
    
 
 
