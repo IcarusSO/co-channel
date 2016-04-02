@@ -115,7 +115,7 @@ downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err 
 
 
 ### Api
-* [new channel(buffer_no[, type])] - create a new co-channel with number of buffers, default is zero. Types of channel can be 'default', 'sliding' or 'droping'
+* [new channel(buffer_no, type='default')] - create a new co-channel with number of buffers, default is zero. Types of channel can be 'default', 'sliding' or 'droping'
 * [channel.put(brick)] - return a Promise which will be resolved when the channel has vacancy and the brick is put to the channel.
 * [channel.take()] - return a Promise which will be resolved with a brick in the channel
 * [channel.close()] - add a channel.CLOSED brick to the channel and return a promise when the all the bricks 
@@ -129,7 +129,7 @@ downloadCo('http://www.example.com/', ch).then(_ => console.log(i++)).catch(err 
 * [channel.DROPPING] - type of a channel, extra buffers are dropped
 * [channel.SLIDING] - type of a channel, extra buffers replace the eraliest buffers
 
-   [new channel(buffer_no)]: <https://github.com/IcarusSO/co-channel>
+   [new channel(buffer_no, type='default')]: <https://github.com/IcarusSO/co-channel>
    [channel.put(brick)]: <https://github.com/IcarusSO/co-channel>
    [channel.take()]: <https://github.com/IcarusSO/co-channel>
    [channel.close()]: <https://github.com/IcarusSO/co-channel>
